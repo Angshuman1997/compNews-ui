@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-function AdBanner() {
+function HeadNews({newsDataHeadline}) {
   const colors = ["#0088FE", "#00C49F", "#e4e716", "#ff4d00"];
   const delay = 4000;
 
@@ -83,14 +83,14 @@ function AdBanner() {
   );
 }
 
-export default AdBanner;
+export default HeadNews;
 
 const Container = styled.div`
   overflow: hidden;
   margin-top: 4rem;
 
   @media (max-width: 768px) {
-    margin-top: 6rem;
+    margin-top: 7rem;
   }
 `;
 

@@ -22,9 +22,13 @@ export const Logo = styled.div`
   align-items: center;
   margin-right: 1rem;
   column-gap: 0.2rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5rem);
+  border-radius: 2rem;
+  padding: 0.7rem;
 
   @media (max-width: 768px) {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
