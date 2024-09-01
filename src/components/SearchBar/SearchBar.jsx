@@ -10,6 +10,7 @@ const SearchBar = ({ search, handleSearch, handleSearchClose }) => {
       <input
         type="text"
         placeholder="Search..."
+        value={search}
         onChange={handleSearch}
       />
       {search && (

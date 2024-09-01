@@ -13,8 +13,10 @@ const HomePage = () => {
   const [extraLoading, setExtraLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [inputValue, setInputValue] = useState(""); // New state for input value
   const [totalNews, setTotalNews] = useState(0);
 
+  // Debounce the search value update
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedSearch = useCallback(
     debounce((value) => {
@@ -26,13 +28,16 @@ const HomePage = () => {
     []
   );
 
-  const handleSearch = (e) => {
+  // Handle input value change
+  const handleInputChange = (e) => {
     const value = e.target.value;
-    debouncedSearch(value);
+    setInputValue(value); // Update the input value immediately
+    debouncedSearch(value); // Debounce the search operation
   };
 
   const handleSearchClose = () => {
-    setSearch("");
+    setInputValue(""); // Clear the input value
+    setSearch(""); // Clear the search value
     setOffset(0);
     setNewsData([]);
     setNewsDataHasMore(true);
@@ -43,7 +48,7 @@ const HomePage = () => {
     setExtraLoading(true);
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_FETCHNEWS}?limit=30&offset=${offset}`
+        `${process.env.REACT_APP_FETCHNEWS}${offset}`
       );
       const newData = response.data.data;
       setTotalNews(response.data.total);
@@ -105,23 +110,35 @@ const HomePage = () => {
   }, [handleScroll]);
 
   const modNewsData = () => {
-    const filteredObject = newsData.filter(
-      (itemA) => !newsDataHeadline.some((itemB) => itemB._id === itemA._id)
+    let temp;
+
+    if (search) {
+      temp = [...newsData];
+    } else {
+      temp = newsData.filter(
+        (itemA) => !newsDataHeadline.some((itemB) => itemB._id === itemA._id)
+      );
+    }
+
+    const resultData = temp.filter(
+      (value, index, self) =>
+        index === self.findIndex((t) => t._id === value._id)
     );
-    return filteredObject;
+
+    return resultData;
   };
 
   return (
     <React.Fragment>
       <Main>
         <TopContent
-          search={search}
-          handleSearch={handleSearch}
+          search={inputValue} // Pass the immediate input value
+          handleSearch={handleInputChange} // Handle input change
           handleSearchClose={handleSearchClose}
         />
         <MainContainer
-          search={search}
-          newsData={search ? newsData : modNewsData()}
+          search={inputValue} // Pass the immediate input value
+          newsData={modNewsData()}
           extraLoading={extraLoading}
           newsDataHeadline={newsDataHeadline}
           loading={loading}

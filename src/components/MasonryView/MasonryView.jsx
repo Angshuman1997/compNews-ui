@@ -54,7 +54,7 @@ export default function MasonryView({ itemData, extraTopMargin }) {
       }}
     >
       <Masonry
-        columns={{ xs: 1, md: 4, xl: 6 }}
+        columns={{ xs: 1, sm: 3, md: 4, xl: 6 }}
         spacing={2}
         sx={{ margin: "0px" }}
       >
