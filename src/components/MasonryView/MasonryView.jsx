@@ -45,7 +45,7 @@ export default function MasonryView({ itemData }) {
   return (
     <Box sx={{ width: "100%", paddingTop: "0.5rem" }}>
       <Masonry
-        columns={{ xs: 1, md: 3, xl: 5 }}
+        columns={{ xs: 1, md: 4, xl: 6 }}
         spacing={2}
         sx={{ margin: "0px" }}
       >

@@ -6,7 +6,7 @@ import MainContainer from "../../components/MainContainer/MainContainer";
 
 const HomePage = () => {
   const [newsData, setNewsData] = useState([]);
-  const [newsDataHeadline, setNewsDataHeadline] = useState([]);
+  const [newsDataHeadline, setNewsDataHeadline] = useState(null);
   const [newsDataHasMore, setNewsDataHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -18,8 +18,16 @@ const HomePage = () => {
         const response = await axios.get(
           `https://comp-news-backend.vercel.app/api/fetchnews?limit=30&offset=${offset}`
         );
-        setNewsData((prevData) => [...prevData, ...response.data.data]);
+        const dataN = [...newsData, ...response.data.data]
         setNewsDataHasMore(response.data.hasMore);
+        if(!newsDataHeadline) {
+          console.log("here1")
+          setNewsDataHeadline(dataN.slice(0, 4));
+          setNewsData(dataN.slice(4));
+        } else {
+          console.log("here2")
+          setNewsData(dataN);
+        }
       } catch (error) {
         console.error("Error fetching news data:", error);
       } finally {
@@ -31,9 +39,6 @@ const HomePage = () => {
       fetchData();
     }
 
-    if(newsDataHeadline.length < 0) {
-      setNewsDataHeadline(newsData.splice(0, 4));
-    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [offset]);
 

@@ -7,7 +7,7 @@ const MainContainer = ({newsData, newsDataHeadline, loading}) => {
 
   return (
     <React.Fragment>
-      <HeadNews newsDataHeadline = {newsDataHeadline} />
+      {newsDataHeadline && <HeadNews newsDataHeadline = {newsDataHeadline} />}
       <MasonryView itemData={newsData} />
       {loading && <CircularProgress />}
     </React.Fragment>
