@@ -32,11 +32,11 @@ const HomePage = () => {
         let response;
         if(search) {
           response = await axios.get(
-            `https://comp-news-backend.vercel.app/api/searchnews/${search}?limit=30&offset=${offset}`
+            `${process.env.REACT_APP_SEARCHNEWS}${search}?limit=30&offset=${offset}`
           );
         } else {
           response = await axios.get(
-            `https://comp-news-backend.vercel.app/api/fetchnews?limit=30&offset=${offset}`
+            `${process.env.REACT_APP_FETCHNEWS}${offset}`
           );
         }
         
