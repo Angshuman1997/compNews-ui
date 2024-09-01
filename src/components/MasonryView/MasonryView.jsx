@@ -103,7 +103,7 @@ const Boxies = styled.div`
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(0.9);
     background: #3d3a3a;
     z-index: 5;
   }
