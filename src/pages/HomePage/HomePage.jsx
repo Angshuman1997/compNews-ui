@@ -9,28 +9,49 @@ const HomePage = () => {
   const [newsDataHeadline, setNewsDataHeadline] = useState(null);
   const [newsDataHasMore, setNewsDataHasMore] = useState(true);
   const [offset, setOffset] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [extraLoading, setExtraLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+
+  const handleSearch = (e) =>{
+    setOffset(0);
+    setNewsDataHasMore(true);
+    setSearch(e.target.value);
+  }
+
+  const handleSearchClose = () =>{
+    setSearch('');
+    setOffset(0);
+    setLoading(true);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setExtraLoading(true);
       try {
-        const response = await axios.get(
-          `https://comp-news-backend.vercel.app/api/fetchnews?limit=30&offset=${offset}`
-        );
+        let response;
+        if(search) {
+          response = await axios.get(
+            `https://comp-news-backend.vercel.app/api/searchnews/${search}?limit=30&offset=${offset}`
+          );
+        } else {
+          response = await axios.get(
+            `https://comp-news-backend.vercel.app/api/fetchnews?limit=30&offset=${offset}`
+          );
+        }
+        
         const dataN = [...newsData, ...response.data.data]
         setNewsDataHasMore(response.data.hasMore);
-        if(!newsDataHeadline) {
-          console.log("here1")
+        if(!newsDataHeadline && !search) {
           setNewsDataHeadline(dataN.slice(0, 4));
           setNewsData(dataN.slice(4));
         } else {
-          console.log("here2")
           setNewsData(dataN);
         }
       } catch (error) {
         console.error("Error fetching news data:", error);
       } finally {
+        setExtraLoading(false);
         setLoading(false);
       }
     };
@@ -40,7 +61,7 @@ const HomePage = () => {
     }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offset]);
+  }, [offset, search]);
 
   const handleScroll = () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
@@ -56,8 +77,8 @@ const HomePage = () => {
   return (
     <React.Fragment>
       <Main>
-        <TopContent />
-        <MainContainer newsData={newsData} loading={loading} newsDataHeadline = {newsDataHeadline}/>
+        <TopContent search={search} handleSearch={handleSearch} handleSearchClose={handleSearchClose} />
+        <MainContainer search={search} newsData={newsData} extraLoading={extraLoading} newsDataHeadline = {newsDataHeadline} loading={loading}/>
       </Main>
     </React.Fragment>
   );

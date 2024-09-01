@@ -4,7 +4,7 @@ import Masonry from "@mui/lab/Masonry";
 import styled from "styled-components";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export default function MasonryView({ itemData }) {
+export default function MasonryView({ itemData, extraTopMargin }) {
   const [loadingImages, setLoadingImages] = React.useState(
     Array(itemData.length).fill(true)
   );
@@ -43,7 +43,16 @@ export default function MasonryView({ itemData }) {
   };
 
   return (
-    <Box sx={{ width: "100%", paddingTop: "0.5rem" }}>
+    <Box
+      sx={{
+        width: "100%",
+        paddingTop: "0.5rem",
+        marginTop: {
+          xs: extraTopMargin ? "6rem" : "0rem",
+          sm: extraTopMargin ? "3rem" : "0rem",
+        },
+      }}
+    >
       <Masonry
         columns={{ xs: 1, md: 4, xl: 6 }}
         spacing={2}
